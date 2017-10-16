@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';//import two helpers from redux-form, Field is wired up automatically to Redux-form, reduxForm is a function similar to the connect function
+import { Field, reduxForm } from 'redux-form';//import two helpers from redux-form, Field is wired up automatically to Redux-form, reduxForm is a function similar to the connect function responsible for handling the state and validation of our form
 
 class PostsNew extends Component {
   renderField(field){
@@ -11,15 +11,20 @@ class PostsNew extends Component {
           type="text"
           {...field.input} // field.input is an object that has some properties and event handlers, the ... pass those props to input instead of doing onChange={this.input.onChange}
         />
-        {field.meta.error} {/* this property is automatically added to that field object from our validate function */}
+        {field.meta.touched ? field.meta.error : ''} {/* field.meta.error show error, is automatically added to that field object from our validate function */}
       </div>
     )
   }
 
-  //to show the errors on the screen we can reference the field object that is passed to the render field function
+  onSubmit(values){
+    console.log(values);
+  }
+
   render() {
+    const { handleSubmit } = this.props; //this is a property that's being passed to the component on behalf of redux form (we wired reduxForm with the PostNew component to add some additional properties to our component)
+
     return(
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}> {/* redux form is no responsible for saving the data or making a post request. handleSubmit is going to run the redux-form (validation, state), if the form is valid, we will call the callback and passes us the values out of the form */}
         <Field
           label="Title"
           name="title" // the name here must be identical from the validate function
@@ -35,6 +40,7 @@ class PostsNew extends Component {
           name="content"
           component={this.renderField}
         />
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     );
   }
@@ -60,7 +66,8 @@ function validate(values) { // whenever the user tries to submit the form this f
   return errors;
 }
 
-export default reduxForm({ // we pass a single argument that is a function tha takes some #s of configurations options for it
-  validate, // pass the configuration option called validate, the same as validate: validate
-  form: 'PostsNewForm' // form: the name of the form, if there are multiple forms in a single page redux-form will handle the different forms correctly. PostsNewForm needs to be unique to not share it state with any other forms
+// we wired reduxForm with the PostNew component to add some additional properties to our component
+export default reduxForm({
+  validate,
+  form: 'PostsNewForm'
 })(PostsNew);
