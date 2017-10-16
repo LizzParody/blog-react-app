@@ -3,15 +3,20 @@ import { Field, reduxForm } from 'redux-form';//import two helpers from redux-fo
 
 class PostsNew extends Component {
   renderField(field){
+    const { meta: { touched, error} } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`
+
     return(
-      <div className="form-group">
+      <div className={className}>
         <label>{field.label}</label>
         <input
           className="form-control"
           type="text"
           {...field.input} // field.input is an object that has some properties and event handlers, the ... pass those props to input instead of doing onChange={this.input.onChange}
         />
-        {field.meta.touched ? field.meta.error : ''} {/* field.meta.error show error, is automatically added to that field object from our validate function */}
+        <div className="text-help">
+          {touched ? error : ''} {/* field.meta.error show error, is automatically added to that field object from our validate function */}
+        </div>
       </div>
     )
   }
