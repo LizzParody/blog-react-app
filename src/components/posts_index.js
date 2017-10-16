@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'; //to navigate to other components with the button
 import { fetchPosts } from '../actions';
 
 class PostsIndex extends Component {
@@ -22,6 +23,11 @@ class PostsIndex extends Component {
     console.log(this.props.posts); // return two objects with the data
     return (
       <div>
+        <div className="text-xs-right"> {/* it will pull the div in the right hand side of the screen */}
+          <Link className="btn btn-primary" to="/posts/new">
+            Add a Post
+          </Link>
+        </div>
         <h3>Posts</h3>
         <ul className="list-group">
           {this.renderPosts()}
