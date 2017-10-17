@@ -18,7 +18,7 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Switch> {/* The switch will look at all the routes and render only the first route that matches the url, so the most specific routes goes on the top */}
-        <Route path="/posts/new" component={PostsNew} />
+          <Route path="/posts/new" component={PostsNew} />
           <Route path="/" component={PostsIndex} />
         </Switch>
       </div>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';//import two helpers from redux-form, Field is wired up automatically to Redux-form, reduxForm is a function similar to the connect function responsible for handling the state and validation of our form
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions'
 
 class PostsNew extends Component {
   renderField(field){
@@ -23,7 +25,10 @@ class PostsNew extends Component {
   }
 
   onSubmit(values){
-    console.log(values);
+    // console.log(values);  -> {title: "asdf", categories: "asdf", content: "asdf"}     
+    this.props.createPost(values, () => {
+      this.props.history.push('/'); //it will automatically go back to the root route
+    });
   }
 
   render() {
@@ -77,4 +82,6 @@ function validate(values) { // whenever the user tries to submit the form this f
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew);
+})(
+  connect(null, { createPost })(PostsNew) // this is how we stack up multiple connect like helpers
+);
