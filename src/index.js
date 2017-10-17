@@ -9,6 +9,7 @@ import promise from 'redux-promise';
 import reducers from './reducers';
 import PostsIndex from './components/posts_index';
 import PostsNew from './components/posts_new';
+import PostsShow from './components/posts_show';
 
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore); //pass promise imported from redux-promise as argument
@@ -19,6 +20,7 @@ ReactDOM.render(
       <div>
         <Switch> {/* The switch will look at all the routes and render only the first route that matches the url, so the most specific routes goes on the top */}
           <Route path="/posts/new" component={PostsNew} />
+          <Route path="/posts/:id" component={PostsShow} />
           <Route path="/" component={PostsIndex} />
         </Switch>
       </div>
