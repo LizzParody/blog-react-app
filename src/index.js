@@ -3,7 +3,7 @@ import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'; //Switch component fix the bug of the root url, when the index component is render in all the components because it start with "/"
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import promise from 'redux-promise';
 
 import reducers from './reducers';
@@ -12,13 +12,13 @@ import PostsNew from './components/posts_new';
 import PostsShow from './components/posts_show';
 
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore); //pass promise imported from redux-promise as argument
+const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
-        <Switch> {/* The switch will look at all the routes and render only the first route that matches the url, so the most specific routes goes on the top */}
+        <Switch>
           <Route path="/posts/new" component={PostsNew} />
           <Route path="/posts/:id" component={PostsShow} />
           <Route path="/" component={PostsIndex} />

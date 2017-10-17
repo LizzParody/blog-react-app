@@ -15,30 +15,30 @@ class PostsNew extends Component {
         <input
           className="form-control"
           type="text"
-          {...field.input} // field.input is an object that has some properties and event handlers, the ... pass those props to input instead of doing onChange={this.input.onChange}
+          {...field.input}
         />
         <div className="text-help">
-          {touched ? error : ''} {/* field.meta.error show error, is automatically added to that field object from our validate function */}
+          {touched ? error : ''}
         </div>
       </div>
     )
   }
 
   onSubmit(values){
-    // console.log(values);  -> {title: "asdf", categories: "asdf", content: "asdf"}     
+    // console.log(values);  -> {title: "asdf", categories: "asdf", content: "asdf"}
     this.props.createPost(values, () => {
-      this.props.history.push('/'); //it will automatically go back to the root route
+      this.props.history.push('/');
     });
   }
 
   render() {
-    const { handleSubmit } = this.props; //this is a property that's being passed to the component on behalf of redux form (we wired reduxForm with the PostNew component to add some additional properties to our component)
+    const { handleSubmit } = this.props;
 
     return(
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}> {/* redux form is no responsible for saving the data or making a post request. handleSubmit is going to run the redux-form (validation, state), if the form is valid, we will call the callback and passes us the values out of the form */}
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title"
-          name="title" // the name here must be identical from the validate function
+          name="title"
           component={this.renderField}
         />
         <Field
@@ -58,13 +58,13 @@ class PostsNew extends Component {
   }
 }
 
-function validate(values) { // whenever the user tries to submit the form this function will be called, the argument is values by convention, values contains all the values that the user has enter in the form
+function validate(values) {
   // console.log(values) -> {title: "asdf", categories: "asdf", content: "asdf"}
   const errors = {};
 
   // validate the inputs from 'values'
   if(!values.title){
-    errors.title = "Enter a title"; // if the user didn't enter a title, then we will add a property to the errors object of title and we're going to assigned to the msg it will be display to the user
+    errors.title = "Enter a title";
   }
   if(!values.categories){
     errors.categories = "Enter some categories";
@@ -73,15 +73,12 @@ function validate(values) { // whenever the user tries to submit the form this f
     errors.content = "Enter some content please";
   }
 
-  // if errors is empty the form is valid to submit
-  // if errors has *any* properties, redux form assumes form is invalid
   return errors;
 }
 
-// we wired reduxForm with the PostNew component to add some additional properties to our component
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
 })(
-  connect(null, { createPost })(PostsNew) // this is how we stack up multiple connect like helpers
+  connect(null, { createPost })(PostsNew) 
 );
