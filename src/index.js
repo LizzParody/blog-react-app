@@ -15,7 +15,7 @@ import PostsShow from './components/posts_show';
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore); //pass promise imported from redux-promise as argument
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),)}>
     <BrowserRouter>
       <div>
         <Switch> {/* The switch will look at all the routes and render only the first route that matches the url, so the most specific routes goes on the top */}
